@@ -1,0 +1,45 @@
+{
+  "deviceInstances":[
+    {
+      "id":"raspberrypi-edge-01",
+      "name":"raspberrypi-edge-01",
+      "protocol":"protocol-raspberrypi-edge-01",
+      "model":"edge-node-model",
+      "twins":[
+        {
+          "propertyName":"Stat",
+          "desired":{
+            "value":""
+          },
+          "reported":{
+            "value":""
+          }
+        }
+      ]
+    }
+  ],
+  "deviceModels":[
+    {
+      "name":"edge-node-model",
+      "properties":[
+        {
+          "name":"Stat",
+          "dataType":"string",
+          "description":"Stat of Node",
+          "accessMode":"ReadOnly",
+          "defaultValue":""
+        }
+      ]
+    }
+  ],
+  "protocols":[
+    {
+      "name":"protocol-raspberrypi-edge-01",
+      "protocol":"http",
+      "protocolConfig":{
+        "httpAddress":"192.168.1.103:36000"
+      },
+      "protocolCommonConfig":null
+    }
+  ]
+}
