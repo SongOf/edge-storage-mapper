@@ -26,7 +26,7 @@ func (td *TwinData) Run() {
 	}
 
 	td.Result = fmt.Sprintf("%s", b)
-
+	fmt.Println(td.Result)
 	if err = td.handlerPublish(); err != nil {
 		klog.Errorf("publish data to mqtt failed: %v", err)
 	}
@@ -35,6 +35,7 @@ func (td *TwinData) Run() {
 func (td *TwinData) handlerPublish() (err error) {
 	// construct payload
 	var payload []byte
+	fmt.Println(td.Topic)
 	if strings.Contains(td.Topic, "$hw") {
 		if payload, err = common.CreateMessageTwinUpdate(td.Name, td.Type, td.Result); err != nil {
 			klog.Errorf("Create message twin update failed: %v", err)

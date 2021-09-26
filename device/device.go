@@ -94,6 +94,7 @@ func initTwin(dev *globals.HttpDev) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
+
 			timer.Start()
 		}()
 

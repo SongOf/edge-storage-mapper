@@ -51,6 +51,7 @@ func (hc *HttpClient) GetStatus() (string, error) {
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 	if string(body) == "edge storage agent is alive" {
 		return common.DEVSTOK, nil
 	}
