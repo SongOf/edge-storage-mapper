@@ -1,0 +1,48 @@
+<div class="container">
+	<div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Welcome {{.UserName}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img class="img-circle" src="/static/img/no-image.png" width="150" height="150" alt="User Pic">
+                            </div>
+                            <div class=" col-md-10">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="table-no-border">Login Name</td>
+                                        <td class="table-no-border">{{.SysUser.LoginName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Name</td>
+                                        <td>{{.SysUser.UserName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>{{.SysUser.Email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone</td>
+                                        <td>{{.SysUser.Phonenumber}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="panel-footer">
+                        <button class="btn btn-sm btn-primary" type="button" data-toggle="tooltip" data-original-title="Send message to user"><i class="glyphicon glyphicon-envelope"></i></button>
+                        <span class="pull-right">
+                            <button class="btn btn-sm btn-warning" type="button" data-toggle="tooltip" data-original-title="Edit this user"><i class="glyphicon glyphicon-edit"></i></button>
+                            <button class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" data-original-title="Remove this user"><i class="glyphicon glyphicon-remove"></i></button>
+                        </span>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+</div>
+    

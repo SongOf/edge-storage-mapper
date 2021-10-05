@@ -1,0 +1,12 @@
+mysql:
+  host: "127.0.01"
+  port: 3306
+  user: "root"
+  password: "songof123"
+  database: "iot_cloud_sys"
+  # 最大连接数, 现网DB目前配置为6400
+  max_open_conns: 1000
+  # 空闲连接数量最大值
+  max_idle_conns: 50
+  # 连接最长复用时间,单位秒
+  conn_max_lifetime: 3600
