@@ -39,7 +39,26 @@ type Notes struct {
 	UpdatedAt time.Time
 }
 
-func init() {
+type EdgeCamera struct {
+	Id             int    `orm:"auto"`
+	MapperId       int    `form:"mapper_id"`
+	SerialNumber   int    `form:"serial_number"`
+	ValidateCode   string `form:"validate_code"`
+	Ip             string `form:"ip"`
+	Protocol       string `form:"protocol"`
+	Url            string `form:"url"`
+	State          string `form:"state"`
+	Version        int    `form:"version"`
+	CreateBy       string `form:"create_by"`
+	CreatorId      int    `form:"creator_id"`
+	CreateTime     time.Time
+	UpdateBy       string `form:"update_by"`
+	LastOperatorId int    `form:"last_operator_id"`
+	UpdateTime     time.Time
+}
+
+func Init() {
 	orm.RegisterModel(new(SysUser))
+	orm.RegisterModel(new(EdgeCamera))
 	orm.RegisterModel(new(Notes))
 }

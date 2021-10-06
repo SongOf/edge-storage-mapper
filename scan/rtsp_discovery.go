@@ -8,12 +8,12 @@ import (
 	"os"
 	"strings"
 	"sync"
-	"time"
 )
 
 var (
-	rwlock sync.RWMutex
-	wg     sync.WaitGroup
+	rwlock      sync.RWMutex
+	wg          sync.WaitGroup
+	HostInfoMap sync.Map
 )
 
 func parseCIDR() (cidr string, err error) {
@@ -27,27 +27,28 @@ func parseCIDR() (cidr string, err error) {
 	return ipNet.String(), nil
 }
 
-func DiscoveryRtspHosts(duration time.Duration) ([]*HostInfo, error) {
+func DiscoveryRtspHosts() {
 	//allow non root user to execute by compare with euid
 	if os.Geteuid() != 0 {
 		log.Fatal("goscan must run as root.")
 	}
+	klog.Info("scan start")
 	hostIps := []string{}
 	hostInfos := []*HostInfo{}
 	cidr, _ := parseCIDR()
+	klog.Info(cidr)
 	scanner, err := nmap.NewScanner(
 		nmap.WithTargets(cidr),
 		nmap.WithPingScan(),
 	)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	result, _, err := scanner.Run()
 	if err != nil {
-		return nil, err
+		return
 	}
-
 	for _, host := range result.Hosts {
 		// 查询出所有在线 IP
 		ip := fmt.Sprintf("%s", host.Addresses[0])
@@ -58,6 +59,7 @@ func DiscoveryRtspHosts(duration time.Duration) ([]*HostInfo, error) {
 	}
 
 	for _, ip := range hostIps {
+		klog.Info("start trace IP: ", ip)
 		// 遍历每个ip 开启多个 goroutine
 		go func(ip string) {
 			defer wg.Done()
@@ -75,13 +77,14 @@ func DiscoveryRtspHosts(duration time.Duration) ([]*HostInfo, error) {
 	}
 	// 等待所有完成
 	wg.Wait()
-	res := []*HostInfo{}
+	klog.Info(hostInfos)
 	for _, hostInfo := range hostInfos {
 		if isRtspHost(hostInfo) {
-			res = append(res, hostInfo)
+			HostInfoMap.Store(hostInfo.Ip, hostInfo)
 		}
 	}
-	return res, nil
+	klog.Info("scan end")
+	klog.Info(HostInfoMap)
 }
 
 func isRtspHost(hostInfo *HostInfo) bool {

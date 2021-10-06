@@ -14,7 +14,9 @@
             {{if .UserID}}
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/profile">Profile</a></li>
-                    <li><a href="/notepad">Device</a></li>
+                    <li><a href="/notepad">Notepad</a></li>
+                    <li><a href="/discovery">Discovery</a></li>
+                    <li><a href="/device">Device</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             {{end}}

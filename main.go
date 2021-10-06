@@ -1,8 +1,12 @@
 package main
 
 import (
+	"encoding/json"
+	mappercommon "github.com/SongOf/edge-storage-mapper/common"
 	"github.com/SongOf/edge-storage-mapper/conf"
+	"github.com/SongOf/edge-storage-mapper/models"
 	"github.com/SongOf/edge-storage-mapper/routers"
+	"github.com/SongOf/edge-storage-mapper/scan"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
@@ -10,6 +14,7 @@ import (
 	"k8s.io/klog/v2"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func initViper(confFilePath, configFileFullName string) *viper.Viper {
@@ -39,7 +44,6 @@ func loadMysqlConfig(v *viper.Viper) *conf.MysqlConf {
 func init() {
 	commonViper := initViper("./conf", "common_config.yaml")
 
-	//appConf := loadAppConfig(commonViper)
 	mysqlConf := loadMysqlConfig(commonViper)
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	err := orm.RegisterDataBase("default", "mysql", mysqlConf.User+":"+mysqlConf.Password+"@tcp("+mysqlConf.Host+":"+strconv.Itoa(int(mysqlConf.Port))+")/"+mysqlConf.Database+"?charset=utf8&parseTime=True")
@@ -52,6 +56,25 @@ func init() {
 }
 
 func main() {
+
+	klog.Info("this mapper ID is: ", mappercommon.MAPPER_ID)
+	scanCycle := 60 * 1 * time.Second
+	timer := mappercommon.Timer{Function: scan.DiscoveryRtspHosts, Duration: scanCycle, Times: 0}
+	go func() {
+		timer.Start()
+	}()
+	go func() {
+		for {
+			scan.HostInfoMap.Range(func(k, v interface{}) bool {
+				s, _ := json.Marshal(v)
+				klog.Info(string(s))
+				return true
+			})
+			time.Sleep(60 * time.Second)
+		}
+	}()
+
+	models.Init()
 	routers.Init()
 	beego.Run()
 }

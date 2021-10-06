@@ -16,6 +16,8 @@ limitations under the License.
 
 package common
 
+const MAPPER_ID = 111111111
+
 // Device status definition.
 const (
 	DEVSTOK        = "OK"
@@ -23,4 +25,8 @@ const (
 	DEVSTDISCONN   = "DISCONNECTED" /* Disconnected */
 	DEVSTUNHEALTHY = "UNHEALTHY"    /* Unhealthy status from device */
 	DEVSTUNKNOWN   = "UNKNOWN"
+	ONLINE         = "ONLINE"
+	OFFLINE        = "OFFLINE"
+	BINDED         = "BINDED"
+	UNBIND         = "UNBIND"
 )

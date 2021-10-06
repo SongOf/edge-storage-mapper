@@ -14,8 +14,12 @@ func Init() {
 	// Member related routes
 	beego.Router("/profile/", &controllers.HomeController{}, "get:Home")
 
+	//Edge cameras related routes
+	beego.Router("/discovery/", &controllers.DeviceController{}, "get:DiscoveryList")
+	beego.Router("/device/", &controllers.DeviceController{}, "get:List")
+	beego.Router("/device/add", &controllers.DeviceController{}, "post:Add")
+	beego.Router("/device/delete", &controllers.DeviceController{}, "get:Delete")
 	// User notes related routes
-
 	beego.Router("/notepad/", &controllers.NotePadController{}, "get,post:CreateNote")
 	beego.Router("/notepad/:mode/:id([0-9]+", &controllers.NotePadController{}, "get:GetNotes;post:UpdateNotes")
 	beego.Router("/notepad/delete/:id([0-9]+", &controllers.NotePadController{}, "get:DeleteNotes")
