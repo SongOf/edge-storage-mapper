@@ -18,7 +18,7 @@
     								<div class="action mt-3">
     								    <a href="device/view/{{ $camera.Ip }}" class="btn btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span><strong>View</strong></span>
     								    </a>
-                                        <a href="javascript:void(0);" onclick="deleteDevice({{$camera.Ip}})"class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span> <strong>Delete</strong></span>
+                                        <a href="javascript:void(0);" onclick="deleteDevice({{$camera.Ip}})"class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span> <strong>Unbind</strong></span>
                                         </a>
     								</div>
     							</div>

@@ -37,7 +37,7 @@ func DiscoveryRtspHosts() {
 	ports := []*Port{}
 	ports = append(ports, &p)
 	HostInfoMap.Store("192.168.10.111", &HostInfo{
-		Ip:       "192.168.10.101",
+		Ip:       "192.168.10.111",
 		Mac:      []byte{},
 		Hostname: "",
 		Manuf:    "",
@@ -93,14 +93,12 @@ func DiscoveryRtspHosts() {
 	}
 	// 等待所有完成
 	wg.Wait()
-	klog.Info(hostInfos)
 	for _, hostInfo := range hostInfos {
 		if isRtspHost(hostInfo) {
 			HostInfoMap.Store(hostInfo.Ip, hostInfo)
 		}
 	}
 	klog.Info("scan end")
-	klog.Info(HostInfoMap)
 }
 
 func isRtspHost(hostInfo *HostInfo) bool {

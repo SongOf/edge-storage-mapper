@@ -302,8 +302,12 @@ func (c *DeviceController) DeviceList() {
 }
 
 func (c *DeviceController) DeleteDevice() {
+	UserID := c.GetSession("uId")
 	UserName := c.GetSession("username")
 	ip := c.Ctx.Input.Param(":ip")
+	if UserID == nil {
+		c.Redirect(beego.URLFor("UserController.Login"), 302)
+	}
 	ec := models.EdgeCamera{
 		MapperId: mappercommon.MAPPER_ID,
 		Ip:       ip,
