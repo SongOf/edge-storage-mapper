@@ -11,14 +11,15 @@
     								<img src="http://placehold.it/80" class="img-circle img-responsive" alt="" />
     							</div>
     							<div class="col-xs-10 col-md-11">
-    							    <div>绑定状态：{{$camera.BindInfo}}</div>
-    							    <div class="text-info mt-3">设备IP: {{ $camera.Ip }}</div>
-    							    <div class="text-info mt-3">流协议: {{ $camera.Protocol }}</div>
-    							    <div class="text-info mt-3">流地址: {{ $camera.Url }}</div>
+    							    <div class="text-info mt-3">设备序列号: {{ $camera.SerialNumber }}</div>
+    							    <div class="text-info mt-3">设备验证码: {{ $camera.ValidateCode }}</div>
     							    <div class="text-info mt-3">设备在线状态: {{ $camera.State }}</div>
+    							    <div class="text-info mt-3">绑定状态: {{ $camera.BindInfo }}</div>
     								<div class="action mt-3">
-    								    <a href="device/bind/{{ $camera.Ip }}" class="btn btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span><strong>Bind</strong></span>
+    								    <a href="device/view/{{ $camera.Ip }}" class="btn btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span><strong>View</strong></span>
     								    </a>
+                                        <a href="javascript:void(0);" onclick="deleteDevice({{$camera.Ip}})"class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span><span> <strong>Delete</strong></span>
+                                        </a>
     								</div>
     							</div>
     						</div>

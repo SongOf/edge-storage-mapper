@@ -16,9 +16,9 @@ func Init() {
 
 	//Edge cameras related routes
 	beego.Router("/discovery/", &controllers.DeviceController{}, "get:DiscoveryList")
-	beego.Router("/device/", &controllers.DeviceController{}, "get:List")
-	beego.Router("/device/add", &controllers.DeviceController{}, "post:Add")
-	beego.Router("/device/delete", &controllers.DeviceController{}, "get:Delete")
+	beego.Router("/device/:mode/?:ip", &controllers.DeviceController{}, "get:GetDevice;post:BindDevice")
+	beego.Router("/device/", &controllers.DeviceController{}, "get:DeviceList")
+	beego.Router("/device/delete", &controllers.DeviceController{}, "get:DeleteDevice")
 	// User notes related routes
 	beego.Router("/notepad/", &controllers.NotePadController{}, "get,post:CreateNote")
 	beego.Router("/notepad/:mode/:id([0-9]+", &controllers.NotePadController{}, "get:GetNotes;post:UpdateNotes")

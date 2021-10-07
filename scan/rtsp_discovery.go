@@ -28,6 +28,22 @@ func parseCIDR() (cidr string, err error) {
 }
 
 func DiscoveryRtspHosts() {
+	//{"ip":"192.168.10.101","mac":null,"hostname":"","manuf":"","os_name":"Linux 2.6.32 - 3.5","ports":[{"id":554,"name":"rtsp","state":"open"},{"id":8000,"name":"http-alt","state":"open"},{"id":8200,"name":"trivnet1","state":"open"},{"id":9010,"name":"sdr","state":"open"}]}
+	p := Port{
+		Id:    554,
+		Name:  "rtsp",
+		State: "open",
+	}
+	ports := []*Port{}
+	ports = append(ports, &p)
+	HostInfoMap.Store("192.168.10.111", &HostInfo{
+		Ip:       "192.168.10.101",
+		Mac:      []byte{},
+		Hostname: "",
+		Manuf:    "",
+		OsName:   "",
+		Ports:    ports,
+	})
 	//allow non root user to execute by compare with euid
 	if os.Geteuid() != 0 {
 		log.Fatal("goscan must run as root.")

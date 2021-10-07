@@ -20,7 +20,7 @@ func (ec *EdgeCamera) AddCamera() int64 {
 func GetCameraBySerialNumber(sn int) []*EdgeCamera {
 	db := orm.NewOrm()
 	var edgeCameras []*EdgeCamera
-	db.QueryTable("iot_cloud_edge_camera").Filter("serial_number", sn).All(&edgeCameras)
+	db.QueryTable("edge_camera").Filter("serial_number", sn).All(&edgeCameras)
 
 	return edgeCameras
 }
@@ -33,11 +33,19 @@ func GetCameraByMapperId(mId int) []*EdgeCamera {
 	return edgeCameras
 }
 
+func GetCameraByIpAndMapperId(mId int, ip string) *EdgeCamera {
+	db := orm.NewOrm()
+	var edgeCamera EdgeCamera
+	db.QueryTable(new(EdgeCamera)).Filter("mapper_id", mId).Filter("ip", ip).All(&edgeCamera)
+
+	return &edgeCamera
+}
+
 // GetNotesByUserID to get all the notes of a specific user
 func GetCameraAll() []*EdgeCamera {
 	db := orm.NewOrm()
 	var edgeCameras []*EdgeCamera
-	db.QueryTable("iot_cloud_edge_camera").All(&edgeCameras)
+	db.QueryTable("edge_camera").All(&edgeCameras)
 
 	return edgeCameras
 }
@@ -45,7 +53,7 @@ func GetCameraAll() []*EdgeCamera {
 // UpdateNote to update a note
 func (ec *EdgeCamera) UpdateCamera() int64 {
 	db := orm.NewOrm()
-	rowsAffected, err := db.QueryTable("iot_cloud_edge_camera").Filter("id", ec.Id).Update(orm.Params{
+	rowsAffected, err := db.QueryTable("edge_camera").Filter("id", ec.Id).Update(orm.Params{
 		"serial_number": ec.SerialNumber,
 		"validate_code": ec.ValidateCode,
 		"state":         ec.State,
@@ -61,7 +69,7 @@ func (ec *EdgeCamera) UpdateCamera() int64 {
 // DeleteNote to update a note
 func (ec *EdgeCamera) DeleteCamera() int64 {
 	db := orm.NewOrm()
-	rowsAffected, err := db.QueryTable("iot_cloud_edge_camera").Filter("id", ec.Id).Delete()
+	rowsAffected, err := db.QueryTable("edge_camera").Filter("mapper_id", ec.MapperId).Filter("ip", ec.Ip).Delete()
 
 	if err != nil {
 		panic(err)
