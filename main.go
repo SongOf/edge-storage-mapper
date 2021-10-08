@@ -66,7 +66,8 @@ func init() {
 	}
 
 	mqttConf := loadMqttConfig(commonViper)
-	globals.MqttClient = &mappercommon.MqttClient{IP: mqttConf.Server,
+	globals.MqttClient = &mappercommon.MqttClient{
+		IP:         mqttConf.Server,
 		User:       mqttConf.Username,
 		Passwd:     mqttConf.Password,
 		Cert:       mqttConf.Certification,
