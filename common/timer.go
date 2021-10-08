@@ -17,6 +17,7 @@ limitations under the License.
 package common
 
 import (
+	"k8s.io/klog/v2"
 	"time"
 )
 
@@ -25,6 +26,7 @@ type Timer struct {
 	Function func()
 	Duration time.Duration
 	Times    int
+	Shutdown chan string
 }
 
 // Start start a timer.
@@ -32,12 +34,27 @@ func (t *Timer) Start() {
 	ticker := time.NewTicker(t.Duration)
 	if t.Times > 0 {
 		for i := 0; i < t.Times; i++ {
-			<-ticker.C
-			t.Function()
+			select {
+			case <-ticker.C:
+				t.Function()
+			case <-t.Shutdown:
+				klog.Info("timer is exit")
+				return
+			}
 		}
 	} else {
-		for range ticker.C {
-			t.Function()
+		for {
+			select {
+			case <-ticker.C:
+				t.Function()
+			case <-t.Shutdown:
+				klog.Info("timer is exit")
+				return
+			}
 		}
 	}
+}
+
+func (t *Timer) Terminated() {
+	t.Shutdown <- "Done"
 }

@@ -17,12 +17,12 @@ func (ec *EdgeCamera) AddCamera() int64 {
 }
 
 // GetNotesByUserID to get all the notes of a specific user
-func GetCameraBySerialNumber(sn int) []*EdgeCamera {
+func GetCameraBySerialNumber(sn int) *EdgeCamera {
 	db := orm.NewOrm()
-	var edgeCameras []*EdgeCamera
-	db.QueryTable("edge_camera").Filter("serial_number", sn).All(&edgeCameras)
+	var edgeCamera EdgeCamera
+	db.QueryTable("edge_camera").Filter("serial_number", sn).One(&edgeCamera)
 
-	return edgeCameras
+	return &edgeCamera
 }
 
 func GetCameraByMapperId(mId int) []*EdgeCamera {
@@ -36,7 +36,7 @@ func GetCameraByMapperId(mId int) []*EdgeCamera {
 func GetCameraByIpAndMapperId(mId int, ip string) *EdgeCamera {
 	db := orm.NewOrm()
 	var edgeCamera EdgeCamera
-	db.QueryTable(new(EdgeCamera)).Filter("mapper_id", mId).Filter("ip", ip).All(&edgeCamera)
+	db.QueryTable(new(EdgeCamera)).Filter("mapper_id", mId).Filter("ip", ip).One(&edgeCamera)
 
 	return &edgeCamera
 }

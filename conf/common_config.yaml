@@ -1,5 +1,5 @@
 mysql:
-  host: "127.0.01"
+  host: "127.0.0.1"
   port: 3306
   user: "root"
   password: "songof123"
@@ -10,3 +10,9 @@ mysql:
   max_idle_conns: 50
   # 连接最长复用时间,单位秒
   conn_max_lifetime: 3600
+
+mqtt:
+  server: "tcp://127.0.0.1:1883"
+  username: ""
+  password: ""
+  certification: ""

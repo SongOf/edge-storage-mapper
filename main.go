@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/SongOf/edge-storage-mapper/camera"
 	mappercommon "github.com/SongOf/edge-storage-mapper/common"
 	"github.com/SongOf/edge-storage-mapper/conf"
+	"github.com/SongOf/edge-storage-mapper/globals"
 	"github.com/SongOf/edge-storage-mapper/models"
 	"github.com/SongOf/edge-storage-mapper/routers"
 	"github.com/SongOf/edge-storage-mapper/scan"
@@ -12,6 +14,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 	"k8s.io/klog/v2"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -41,6 +44,14 @@ func loadMysqlConfig(v *viper.Viper) *conf.MysqlConf {
 	return &mysqlConf
 }
 
+func loadMqttConfig(v *viper.Viper) *conf.MqttConf {
+	mqttConf := conf.MqttConf{}
+	if err := v.UnmarshalKey("mqtt", &mqttConf); err != nil {
+		klog.Fatal("load mqtt config error", err)
+	}
+	return &mqttConf
+}
+
 func init() {
 	commonViper := initViper("./conf", "common_config.yaml")
 
@@ -52,6 +63,18 @@ func init() {
 		panic(err)
 	} else {
 		klog.Info("Database connected successfully!")
+	}
+
+	mqttConf := loadMqttConfig(commonViper)
+	globals.MqttClient = &mappercommon.MqttClient{IP: mqttConf.Server,
+		User:       mqttConf.Username,
+		Passwd:     mqttConf.Password,
+		Cert:       mqttConf.Certification,
+		PrivateKey: mqttConf.PrivateKey,
+	}
+	if err = globals.MqttClient.Connect(); err != nil {
+		klog.Fatal(err)
+		os.Exit(1)
 	}
 }
 
@@ -73,6 +96,12 @@ func main() {
 			time.Sleep(60 * time.Second)
 		}
 	}()
+
+	if err := camera.CameraInit(); err != nil {
+		klog.Fatal(err)
+		os.Exit(1)
+	}
+	camera.CameraStart()
 
 	models.Init()
 	routers.Init()

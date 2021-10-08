@@ -111,8 +111,8 @@ func (mc *MqttClient) Subscribe(topic string, onMessage mqtt.MessageHandler) err
 	return nil
 }
 
-// getTimestamp get current timestamp.
-func getTimestamp() int64 {
+// GetTimestamp get current timestamp.
+func GetTimestamp() int64 {
 	return time.Now().UnixNano() / 1e6
 }
 
@@ -120,7 +120,7 @@ func getTimestamp() int64 {
 func CreateMessageTwinUpdate(name string, valueType string, value string) (msg []byte, err error) {
 	var updateMsg DeviceTwinUpdate
 
-	updateMsg.BaseMessage.Timestamp = getTimestamp()
+	updateMsg.BaseMessage.Timestamp = GetTimestamp()
 	updateMsg.Twin = map[string]*MsgTwin{}
 	updateMsg.Twin[name] = &MsgTwin{}
 	updateMsg.Twin[name].Actual = &TwinValue{Value: &value}
@@ -134,12 +134,12 @@ func CreateMessageTwinUpdate(name string, valueType string, value string) (msg [
 func CreateMessageData(name string, valueType string, value string) (msg []byte, err error) {
 	var dataMsg DeviceData
 
-	dataMsg.BaseMessage.Timestamp = getTimestamp()
+	dataMsg.BaseMessage.Timestamp = GetTimestamp()
 	dataMsg.Data = map[string]*DataValue{}
 	dataMsg.Data[name] = &DataValue{}
 	dataMsg.Data[name].Value = value
 	dataMsg.Data[name].Metadata.Type = valueType
-	dataMsg.Data[name].Metadata.Timestamp = getTimestamp()
+	dataMsg.Data[name].Metadata.Timestamp = GetTimestamp()
 
 	msg, err = json.Marshal(dataMsg)
 	return
@@ -149,7 +149,7 @@ func CreateMessageData(name string, valueType string, value string) (msg []byte,
 func CreateMessageState(state string) (msg []byte, err error) {
 	var stateMsg DeviceUpdate
 
-	stateMsg.BaseMessage.Timestamp = getTimestamp()
+	stateMsg.BaseMessage.Timestamp = GetTimestamp()
 	stateMsg.State = state
 
 	msg, err = json.Marshal(stateMsg)

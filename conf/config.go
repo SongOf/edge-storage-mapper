@@ -13,3 +13,11 @@ type MysqlConf struct {
 	MaxIdleConns    int
 	ConnMaxLifetime time.Duration
 }
+
+type MqttConf struct {
+	Server        string
+	Username      string
+	Password      string
+	Certification string
+	PrivateKey    string
+}

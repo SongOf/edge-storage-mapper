@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/SongOf/edge-storage-mapper/camera"
 	mappercommon "github.com/SongOf/edge-storage-mapper/common"
 	"github.com/SongOf/edge-storage-mapper/models"
 	"github.com/SongOf/edge-storage-mapper/scan"
@@ -250,6 +251,18 @@ func (c *DeviceController) BindDevice() {
 		UpdateTime:     time.Now(),
 	}
 	if edgeDevice.AddCamera() != 0 {
+		camera.CameraAdd(camera.ReportedCamera{
+			SerialNumber: serialNumber,
+			ValidateCode: validateCode,
+			Ip:           tarCamera.Ip,
+			Url:          fmt.Sprintf("rtsp://admin:%s@%s:%s/h264/ch1/main/av_stream", validateCode, tarCamera.Ip, strconv.Itoa(int(tarPort.Id))),
+			State:        mappercommon.ONLINE,
+			CreateBy:     UserName.(string),
+			CreateTime:   time.Now(),
+			UpdateBy:     UserName.(string),
+			UpdateTime:   time.Now(),
+			ReportedTime: time.Now(),
+		})
 		c.Layout = "layout.tpl"
 		c.LayoutSections = make(map[string]string)
 		c.LayoutSections["Nav"] = "navbar.tpl"
@@ -312,7 +325,17 @@ func (c *DeviceController) DeleteDevice() {
 		MapperId: mappercommon.MAPPER_ID,
 		Ip:       ip,
 	}
+	tmpC := models.GetCameraByIpAndMapperId(mappercommon.MAPPER_ID, ip)
+	tarSn := 0
+	if tmpC != nil {
+		tarSn = tmpC.SerialNumber
+	}
 	if ec.DeleteCamera() != 0 {
+		if tarSn != 0 {
+			camera.CameraDel(tarSn)
+		} else {
+			klog.Error("camera not exist")
+		}
 		c.Layout = "layout.tpl"
 		c.LayoutSections = make(map[string]string)
 		c.LayoutSections["Nav"] = "navbar.tpl"
