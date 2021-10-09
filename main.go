@@ -97,6 +97,8 @@ func main() {
 			time.Sleep(60 * time.Second)
 		}
 	}()
+	models.Init()
+	routers.Init()
 
 	if err := camera.CameraInit(); err != nil {
 		klog.Fatal(err)
@@ -104,7 +106,5 @@ func main() {
 	}
 	camera.CameraStart()
 
-	models.Init()
-	routers.Init()
 	beego.Run()
 }

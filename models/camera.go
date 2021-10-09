@@ -28,7 +28,7 @@ func GetCameraBySerialNumber(sn int) *EdgeCamera {
 func GetCameraByMapperId(mId int) []*EdgeCamera {
 	db := orm.NewOrm()
 	var edgeCameras []*EdgeCamera
-	db.QueryTable("edge_camera").Filter("mapper_id", mId).All(&edgeCameras)
+	db.QueryTable(new(EdgeCamera)).Filter("mapper_id", mId).All(&edgeCameras)
 
 	return edgeCameras
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func TestTwinData_Run(t *testing.T) {
-	globals.MqttClient = &mappercommon.MqttClient{IP: "tcp://192.168.1.103:1883",
+	globals.MqttClient = &mappercommon.MqttClient{IP: "tcp://127.0.0.1:1883",
 		User:       "",
 		Passwd:     "",
 		Cert:       "",
@@ -25,7 +25,7 @@ func TestTwinData_Run(t *testing.T) {
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)
-	topic := fmt.Sprintf(mappercommon.TopicTwinUpdate, "raspberrypi-edge-01")
+	topic := fmt.Sprintf(mappercommon.TopicTwinUpdate, "185339746")
 	klog.V(1).Info("Subscribe topic: ", topic)
 	globals.MqttClient.Subscribe(topic, printMessage)
 	wg.Wait()
@@ -40,6 +40,6 @@ func printMessage(client mqtt.Client, message mqtt.Message) {
 	fmt.Printf("%s", message.Payload())
 	fmt.Println()
 	//Stat即为属性名称
-	fmt.Printf("%s", *dt.Twin["Stat"].Actual.Value)
+	fmt.Printf("%s", *dt.Twin["Ip"].Actual.Value)
 	fmt.Println()
 }

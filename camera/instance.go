@@ -107,12 +107,12 @@ func CameraInit() error {
 			},
 			mappercommon.Timer{
 				Function: nil,
-				Duration: 60 * 5 * time.Second,
+				Duration: 60 * 1 * time.Second,
 				Times:    0,
 				Shutdown: make(chan string),
 			},
 			"",
-			fmt.Sprintf(mappercommon.TopicTwinUpdate, device.SerialNumber),
+			fmt.Sprintf(mappercommon.TopicTwinUpdate, strconv.Itoa(device.SerialNumber)),
 		}
 		pc.ReportTimer.Function = pc.Run
 		cameras[strconv.Itoa(device.SerialNumber)] = pc
@@ -122,7 +122,7 @@ func CameraInit() error {
 
 func CameraStart() {
 	for _, camera := range cameras {
-		camera.ReportTimer.Start()
+		go camera.ReportTimer.Start()
 	}
 }
 
@@ -132,17 +132,17 @@ func CameraAdd(camera ReportedCamera) {
 		camera,
 		mappercommon.Timer{
 			Function: nil,
-			Duration: 60 * 5 * time.Second,
+			Duration: 60 * 1 * time.Second,
 			Times:    0,
 			Shutdown: make(chan string),
 		},
 		"",
-		fmt.Sprintf(mappercommon.TopicTwinUpdate, camera.SerialNumber),
+		fmt.Sprintf(mappercommon.TopicTwinUpdate, strconv.Itoa(camera.SerialNumber)),
 	}
 	pc.ReportTimer.Function = pc.Run
 	cameras[strconv.Itoa(camera.SerialNumber)] = pc
 	lock.Unlock()
-	cameras[strconv.Itoa(camera.SerialNumber)].ReportTimer.Start()
+	go cameras[strconv.Itoa(camera.SerialNumber)].ReportTimer.Start()
 }
 
 func CameraDel(serialNumber int) {
