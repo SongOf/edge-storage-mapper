@@ -82,7 +82,7 @@ func init() {
 func main() {
 
 	klog.Info("this mapper ID is: ", mappercommon.MAPPER_ID)
-	scanCycle := 60 * 1 * time.Second
+	scanCycle := 60 * 3 * time.Second
 	timer := mappercommon.Timer{Function: scan.DiscoveryRtspHosts, Duration: scanCycle, Times: 0}
 	go func() {
 		timer.Start()

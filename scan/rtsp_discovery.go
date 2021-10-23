@@ -36,8 +36,8 @@ func DiscoveryRtspHosts() {
 	}
 	ports := []*Port{}
 	ports = append(ports, &p)
-	HostInfoMap.Store("192.168.10.111", &HostInfo{
-		Ip:       "192.168.10.111",
+	HostInfoMap.Store("192.168.1.106", &HostInfo{
+		Ip:       "192.168.1.106",
 		Mac:      []byte{},
 		Hostname: "",
 		Manuf:    "",

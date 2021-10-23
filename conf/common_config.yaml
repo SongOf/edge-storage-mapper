@@ -12,7 +12,7 @@ mysql:
   conn_max_lifetime: 3600
 
 mqtt:
-  server: "tcp://127.0.0.1:1883"
+  server: "tcp://192.168.1.103:1883"
   username: ""
   password: ""
   certification: ""

@@ -13,7 +13,7 @@ import (
 )
 
 func TestTwinData_Run(t *testing.T) {
-	globals.MqttClient = &mappercommon.MqttClient{IP: "tcp://127.0.0.1:1883",
+	globals.MqttClient = &mappercommon.MqttClient{IP: "tcp://192.168.1.103:1883",
 		User:       "",
 		Passwd:     "",
 		Cert:       "",
